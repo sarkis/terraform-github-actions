@@ -15,12 +15,12 @@ mkdir -p "$PLAN_DIR"
 exec 3>&1
 
 set +e
-(cd $INPUT_PATH && terraform plan -input=false -no-color -detailed-exitcode -lock-timeout=300s $PLAN_ARGS) \
-    2>"$PLAN_DIR/error.txt" \
-    | $TFMASK \
-    | tee /dev/fd/3 \
-    | sed '1,/---/d' \
-        >"$PLAN_DIR/plan.txt"
+(cd $INPUT_PATH && terraform plan -input=false -no-color -detailed-exitcode -lock-timeout=300s -out=$PLAN_DIR/plan.txt $PLAN_ARGS) \
+    2>"$PLAN_DIR/error.txt" #\
+#    | $TFMASK \
+#    | tee /dev/fd/3 \
+#    | sed '1,/---/d' \
+#        >"$PLAN_DIR/plan.txt"
 
 readonly TF_EXIT=${PIPESTATUS[0]}
 set -e
